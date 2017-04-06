@@ -195,9 +195,14 @@ class Provider(BaseProvider):
         return '{0}.{1}'.format(filename, extension)
 
     @classmethod
-    def file_extension(cls, category=None):
+    def file_path(cls, depth=1, category=None, extension=None):
         """
         :param category: audio|image|office|text|video
+        :param extension: file extension
+        :param depth: depth of the file (depth >= 0)
         """
-        category = category if category else cls.random_element(list(cls.file_extensions.keys()))
-        return cls.random_element(cls.file_extensions[category])
+        file = Provider.file_name(category, extension)
+        path = "/{0}".format(file)
+        for d in range(0, depth):
+            path = "/{0}{1}".format(WordProvider.word(), path)
+        return path
